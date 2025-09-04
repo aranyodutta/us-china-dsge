@@ -1,0 +1,19 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# MATLAB temp/backup and compiled extensions
+*.asv
+*.m~
+*.mex*
+
+# Dynare/MATLAB binaries (keep PNG/PDF/CSV results)
+*.mat
+**/*_results.mat
+
+# Logs
+*.log
+
+# Data we don't want in git
+data/raw/
+data/processed/
