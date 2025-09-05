@@ -25,3 +25,5 @@ This repository contains a two-country DSGE model (United States and China) deve
 ## Notes
 - Scope document defines milestones and deliverables.
 - All code/data here is integrated and maintained by Aranyo Dutta.
+
+_Last updated via GitHub Desktop test._
