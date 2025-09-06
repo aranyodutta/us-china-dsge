@@ -1,0 +1,6 @@
+variable,meaning
+ygap_US,US output gap
+pi_US,US inflation (annualized %)
+i_US,US policy rate (quarterly %)
+ex,Nominal USD/CNY exchange rate
+tb_US,US trade balance (% of GDP)
