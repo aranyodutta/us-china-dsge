@@ -1,25 +1,35 @@
-% run_main.m — entry point for US–China DSGE model
-% Requirements: MATLAB R2023b (example), Dynare 6.4 installed and on path
+% run_main.m — entry point for US–China DSGE (M2)
+% Requirements: MATLAB R2023b (example), Dynare 6.4 on path
 
 clear; clc;
 
-% --- Add Dynare path (adjust if needed) ---
-% NOTE: update the path below to your Dynare installation
-% Example: addpath('C:/dynare/6.4/matlab')
-disp('>> Dynare path should be added here');
+% 0) Dynare path (EDIT THIS for your machine)
+% addpath('C:/dynare/6.4/matlab');
 
-% --- Run baseline model (placeholder) ---
-% Replace 'model5.mod' with actual .mod file name when ready
-try
-    dynare model5 noclearall;
-catch
-    warning('Dynare model file not found. Placeholder run only.');
+% 1) Load U.S. data (dy, dinfl, dr)
+cd('../../data');
+run('data_5.m');           % defines dy, dinfl, dr  (see data_5.m)
+cd('../code/scripts');
+
+% 2) Run model with estimation (model13.mod)
+cd('../dynare');
+dynare model13 noclearall
+cd('../scripts');
+
+% 3) Save outputs (IRFs/estimation objects) to results/
+if ~exist('../../results/irfs','dir');        mkdir('../../results/irfs');        end
+if ~exist('../../results/estimation','dir');  mkdir('../../results/estimation');  end
+
+% Save Dynare structures (lightweight)
+save('../../results/estimation/estimation_outputs.mat', 'oo_', 'M_', '-v7.3');
+
+% Optional: dump selected IRFs to CSV if present
+if isfield(oo_, 'irfs')
+    fn = fieldnames(oo_.irfs);
+    for k = 1:numel(fn)
+        v = oo_.irfs.(fn{k});
+        writematrix(v, ['../../results/irfs/', fn{k}, '.csv']);
+    end
 end
 
-% --- Save placeholder output ---
-if ~exist('../../results/irfs','dir')
-    mkdir('../../results/irfs');
-end
-save('../../results/irfs/placeholder.mat');
-
-disp('Run complete (placeholder). IRFs will appear in /results/irfs/');
+disp('Complete: results in /results/estimation and /results/irfs');
