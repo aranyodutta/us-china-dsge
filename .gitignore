@@ -17,3 +17,13 @@ Thumbs.db
 # Data we don't want in git
 data/raw/
 data/processed/
+
+# Dynare build artifacts (do not commit)
+code/dynare/+model13/
+code/dynare/model13/
+code/dynare/*_dynamic.m
+code/dynare/*_static.m
+code/dynare/*.log
+code/dynare/*.jnl
+code/dynare/*.mjl
+code/dynare/*_results.mat
