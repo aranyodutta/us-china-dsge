@@ -169,4 +169,5 @@ sigma     , gamma_pdf , 4.050 , 0.01;
 end;
 
 
-estimation( datafile='data_5.m', mh_replic=20000, mh_nblocks=2, mh_drop=0.3, diffuse_filter );
+estimation( datafile='../../data/data_5', mh_replic=20000, mh_nblocks=2, mh_drop=0.3, diffuse_filter );
+
