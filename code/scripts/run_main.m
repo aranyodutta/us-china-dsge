@@ -11,6 +11,9 @@ cd('../../data');
 run('data_5.m');           % defines dy, dinfl, dr  (see data_5.m)
 cd('../code/scripts');
 
+addpath('../../data');
+
+
 % 2) Run model with estimation (model13.mod)
 cd('../dynare');
 dynare model13 noclearall
