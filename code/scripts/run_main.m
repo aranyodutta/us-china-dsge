@@ -1,34 +1,45 @@
 % run_main.m — entry point for US–China DSGE (M2)
-% Requirements: MATLAB R2023b (example), Dynare 6.4 on path
 
 clear; clc;
 
-% 0) Dynare path (EDIT THIS for your machine)
+% Put Dynare on the path (edit if needed)
 % addpath('C:/dynare/6.4/matlab');
 
-% 1) Load U.S. data (dy, dinfl, dr)
-cd('../../data');
-run('data_5.m');           % defines dy, dinfl, dr  (see data_5.m)
-cd('../code/scripts');
+% ---- Resolve project paths (no hard-coded CDs) ----
+scriptsDir = fileparts(mfilename('fullpath'));
+projRoot   = fileparts(fileparts(scriptsDir));
+dataDir    = fullfile(projRoot,'data');
+dynareDir  = fullfile(projRoot,'code','dynare');
+resIRFDir  = fullfile(projRoot,'results','irfs');
+resEstDir  = fullfile(projRoot,'results','estimation');
 
-% 2) Run model with estimation (model13.mod)
-cd('../dynare');
+% Let Dynare see the dataset (data_5.m) during estimation
+addpath(dataDir);
+
+% ---- Build in a temp folder OFF OneDrive to avoid file locks ----
+buildDir = fullfile(tempdir, 'us_china_dsge_build');
+if exist(buildDir,'dir'), rmdir(buildDir,'s'); end
+mkdir(buildDir);
+
+% Copy only the model file into the temp build dir
+copyfile(fullfile(dynareDir,'model13.mod'), buildDir);
+
+% Run Dynare in the temp build dir
+orig = pwd; cleanup = onCleanup(@() cd(orig));
+cd(buildDir);
 dynare model13 noclearall
-cd('../scripts');
+cd(orig);
 
-% 3) Save outputs (IRFs/estimation objects) to results/
-if ~exist('../../results/irfs','dir');        mkdir('../../results/irfs');        end
-if ~exist('../../results/estimation','dir');  mkdir('../../results/estimation');  end
+% ---- Save outputs back into the repo ----
+if ~exist(resIRFDir,'dir'), mkdir(resIRFDir); end
+if ~exist(resEstDir,'dir'), mkdir(resEstDir); end
 
-% Save Dynare structures (lightweight)
-save('../../results/estimation/estimation_outputs.mat', 'oo_', 'M_', '-v7.3');
+save(fullfile(resEstDir,'estimation_outputs.mat'), 'oo_', 'M_', '-v7.3');
 
-% Optional: dump selected IRFs to CSV if present
 if isfield(oo_, 'irfs')
     fn = fieldnames(oo_.irfs);
     for k = 1:numel(fn)
-        v = oo_.irfs.(fn{k});
-        writematrix(v, ['../../results/irfs/', fn{k}, '.csv']);
+        writematrix(oo_.irfs.(fn{k}), fullfile(resIRFDir,[fn{k} '.csv']));
     end
 end
 
