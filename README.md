@@ -23,6 +23,5 @@ This repository contains a two-country DSGE model (United States and China) deve
 - `paper/` — draft text and tables for the write-up
 
 ## Notes
-- All code/data here is integrated and maintained by Aranyo Dutta.
 
 _Last updated via GitHub Desktop test._
