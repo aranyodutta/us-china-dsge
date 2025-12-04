@@ -18,7 +18,7 @@ This repository contains a two-country DSGE model (United States and China) deve
 ## Repository layout
 - `code/` — Dynare `.mod` files, steady-state, helper scripts
 - `data/` — small CSVs or links (no large raw files committed)
-- `docs/` — scope notes, equations, methods
+- `docs/` — equations, methods
 - `figs/` — exported IRFs, plots, and tables
 - `paper/` — draft text and tables for the write-up
 
